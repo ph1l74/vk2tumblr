@@ -6,8 +6,8 @@ var vk2tubmlr = function ($) {
         if (elements.length > 0) {
             elements.each(index => {
                 el = $(elements[index]);
-                let paramLink = el.attr('albumLink').trim();
-                let paramSize = el.attr('photoSize').trim();
+                let paramLink = el.attr('data-link').length > 0 ? el.attr('data-link').trim() : null
+                let paramSize = el.attr('data-size').length > 0 ? el.attr('data-size').trim() : 'z'
                 let paramOwner = paramLink.substring(paramLink.indexOf('album') + 5, paramLink.indexOf('_'));
                 let paramAlbum = paramLink.substring(paramLink.indexOf('_') + 1, paramLink.length);
                 if (paramSize.length > 0 && paramOwner.length > 0 && paramAlbum.length > 0) {
