@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/css/uikit.min.css" />
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/js/uikit-icons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="/vk2tumblr.js"></script>
+    <title>vk2tumblr</title>
+</head>
+
+<body>
+    <div class="uk-container uk-container-large uk-margin uk-margin-large-top uk-margin-large-bottom">
+        <h1 class="uk-heading-medium uk-heading-line uk-text-center ">
+            <span>
+                vk2tumblr
+            </span>
+        </h1>
+    </div>
+    <div class="uk-container uk-container-large uk-width-1-3">
+        <form id='params' class="uk-form-horizontal uk-margin-large">
+            <div class="uk-margin ">
+                <label class="uk-form-label" for="form-horizontal-text">Link to your album</label>
+                <div class="uk-form-controls">
+                    <input id='paramLink' class="uk-input" id="form-horizontal-text" type="text"
+                        placeholder="https://vk.com/album-1_00">
+                </div>
+            </div>
+
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select">Photo size</label>
+                <div class="uk-form-controls">
+                    <select id='paramSize' class="uk-select" id="form-horizontal-select">
+                        <option value="x">Small</option>
+                        <option value="y">Medium</option>
+                        <option value="z">Large</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="sumbit" class="uk-button uk-button-default uk-float-right">Submit</div>
+
+        </form>
+    </div>
+    <div id="result">
+
+        <div class="uk-container uk-container-large uk-margin uk-margin-top uk-margin-bottom">
+            <h1 class="uk-heading-small uk-heading-line uk-text-center ">
+                <span>
+                    Result
+                </span>
+            </h1>
+        </div>
+        <div class="uk-container uk-container-expand">
+            <div id='content' class="uk-child-width-1-3@m" uk-grid uk-lightbox="animation: fade">
+
+            </div>
+        </div>
+    </div>
+    <script>
+
+        const getPhotos = (params) => {
+            $.ajax({
+                type: 'GET',
+                url: "/photos",
+                async: false,
+                contentType: 'application/json',
+                data: {
+                    o: params.ownerId,
+                    a: params.albumId,
+                    s: params.photoSize
+                },
+                success: function (response) {
+                    $('#content').empty();
+                    response.forEach(photoUnprocessed => {
+                        let div = $('<div>')
+                        let ahrev = $('<a class="uk-inline" href="' + photoUnprocessed[0] + '">')
+                        let img = $('<img src="' + photoUnprocessed[0] + '" alt="">')
+                        let element = div.append(ahrev.append(img));
+
+                        console.log(element);
+                        $('#content').append(element);
+
+                    });
+                },
+                error: function (e) {
+                    console.error('Error while getting photos... Retrying in 1 sec');
+                    setTimeout(getRating(), 1000);
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#sumbit').on('click', function () {
+                let paramLink = $('#paramLink').val().trim();
+                let paramSize = $('#paramSize').val();
+                let paramOwner = paramLink.substring(paramLink.indexOf('album')+5, paramLink.indexOf('_'));
+                let paramAlbum = paramLink.substring(paramLink.indexOf('_')+1, paramLink.length);
+                let params = { ownerId: paramOwner, albumId: paramAlbum, photoSize: paramSize }
+                getPhotos(params);
+            })
+        });
+    </script>
+</body>
+
+</html>
