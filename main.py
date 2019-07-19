@@ -1,6 +1,6 @@
 import vk
 import os
-from flask import Flask, json, request, send_from_directory
+from flask import Flask, json, request, send_from_directory, redirect
 from flask_restful import Api,Resource
 from flask_cors import CORS
 
@@ -11,6 +11,11 @@ vk_api = vk.API(vk_session)
 app = Flask(__name__, static_url_path='/')
 flask_api = Api(app)
 CORS(app)
+
+
+@app.route('/')
+def no_index():
+    return redirect("/index.html", code=302)
 
 
 @app.route('/<path:path>')
@@ -49,8 +54,6 @@ class Photos(Resource):
 
 flask_api.add_resource(Photos, '/photos')
 
+
 if __name__ == '__main__':
-     app.run(host='0.0.0.0', port='5000')
-
-
-# photo_parser(photos_response['items'])
+    app.run(host='0.0.0.0', port='80')
