@@ -1,4 +1,4 @@
-var vk2tubmlr = function ($) {
+var vk2tumblr = function ($) {
 
     var elements = []
 
@@ -50,5 +50,5 @@ var vk2tubmlr = function ($) {
 }(jQuery);
 
 $(document).ready(function () {
-    console.log('vk2tubmlr loaded');
+    console.log('vk2tumblr loaded');
 });
