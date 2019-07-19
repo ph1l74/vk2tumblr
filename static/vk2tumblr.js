@@ -13,7 +13,7 @@ var vk2tubmlr = function ($) {
                 if (paramSize.length > 0 && paramOwner.length > 0 && paramAlbum.length > 0) {
                     $.ajax({
                         type: 'GET',
-                        url: "/photos",
+                        url: "https://vk2tumblr.herokuapp.com/photos",
                         async: false,
                         contentType: 'application/json',
                         data: {
