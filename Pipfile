@@ -10,6 +10,7 @@ vk = "*"
 flask = "*"
 flask-restful = "*"
 flask-cors = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
