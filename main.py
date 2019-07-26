@@ -36,7 +36,7 @@ class Photos(Resource):
         return owner_id, album_id, photo_size
 
     def vk_request(self, owner_id, album_id, photo_size):
-        vk_response = vk_api.photos.get(owner_id=owner_id, album_id=album_id, photo_sizes=1, v="5.101")
+        vk_response = vk_api.photos.get(owner_id=owner_id, album_id=album_id, photo_sizes=1, count=1000, v="5.101")
         for photo in vk_response['items']:
             self.photos.append([size['url'] for size in photo['sizes'] if size['type'] == photo_size])
         return self.photos
